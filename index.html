@@ -1,78 +1,17 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<style>
-
-h1 {
-  font-family: sans-serif;
-}
-
-svg {
-  font: 11px sans-serif;
-}
-
-.bar rect {
-  fill: steelblue;
-  shape-rendering: crispEdges;
-}
-
-.bar text {
-  fill: #fff;
-}
-
-.axis path, .axis line {
-  fill: none;
-  stroke: #ccc;
-  shape-rendering: crispEdges;
-}
-
-.median-line path, .median-line line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-  stroke-width: 2;
-}
-
-.mean-line path, .mean-line line {
-  fill: none;
-  stroke: #f88;
-  shape-rendering: crispEdges;
-}
-
-.g-annotation {
-  position: relative;  
-  stroke: #555;
-  shape-rendering: crispEdges;
-}
-
-.g-annotation-content {
-  font: 12px sans-serif;
-  color: #555;
-  position: relative;
-  border:1.5px solid;
-  padding: 3px;
-  fill: #fff;
-  background-color: #fff;
-}
-
-
-</style>
+<link rel="stylesheet" href="histo-styles.css" type="text/css"/>
 <body>
 <h1>BART Salaries</h1>
-  <div class="chart layer">
-    <div id="chart"></div>
-    <div class="g-annotation" style="top:-300px;left:150px"> <!-- width:90px;height:50px -->
-      <div class="g-annotation-content" style="width:90px">Median Salary: $117,338</div>
-      <svg class="g-annotation-pointer" style="position:relative;top:-18px;left:98px">
-        <line x2="140" y2="90"></line>
-      </svg>
-    </div>
+  <div class="chart group" id="chartgroup0">
+    <div id="chart0"></div>
   </div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
-d3.csv("salaries_w_names_tc.csv")
-    .row(function(d) { return {name: d.Name, title: d.Title, tc: +d["Total Compensation"]}; })
-    .get(function(error, rows) { /* console.log(rows); */ renderHistogram( rows ); });
+d3.csv("bart-comp-all.csv")
+    /* .row(function(d) { return {name: d.Name, title: d.Title, tc: +d["TCOE"]}; }) */
+    .get(function(error, rows) { /* console.log(rows); */ renderHistogram( rows, "TCOE" ); });
 
 // A formatter with commas and no decimal
 var commasFormatter = d3.format(",.0f");
@@ -83,7 +22,7 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
 
 
 
-function renderHistogram( rows )
+function renderHistogram( rows, col )
 {
   // fixme: Get rid of fixed constant 300K!
   var x = d3.scale.linear()
@@ -93,7 +32,7 @@ function renderHistogram( rows )
   // Generate a histogram using twenty uniformly-spaced bins.
   var data = d3.layout.histogram()
       .bins(x.ticks(25))
-      .value( function(r) { return r.tc; })
+      .value( function(r) { return r[ col ]; })
       (rows);
 
   var y = d3.scale.linear()
@@ -124,7 +63,7 @@ function renderHistogram( rows )
       .outerTickSize( 0 );
 
 
-  var svg = d3.select("#chart").append("svg")
+  var svg = d3.select("#chart0").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -135,7 +74,7 @@ function renderHistogram( rows )
       .call(yAxis)
     .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", -35)
+      .attr("y", -40)
       .attr("dy", ".71em")
       .attr("x", -1 * height/2 + margin.bottom)
       .style("text-anchor", "end")
@@ -145,13 +84,18 @@ function renderHistogram( rows )
       .data(data)
     .enter().append("g")
       .attr("class", "bar")
-      .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+      .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; })
+      .on("mouseover", function(d) {
+        console.log( "mouseover: x: ", d.x, "y: ", d.y, "length: ", d.length );
+      })
+      .on("mouseout", function(d) {
+        console.log( "mouseout: x: ", d.x );
+      })      ;
 
   bar.append("rect")
       .attr("x", 1)
       .attr("width", x(data[0].dx) - 1)
       .attr("height", function(d) { return height - y(d.y); });
-
 
   bar.append("text")
       .attr("dy", ".75em")
@@ -166,11 +110,40 @@ function renderHistogram( rows )
       .call(xAxis);
 
   // let's render the quantiles:
-  var rawVals = rows.map( function(r) { return r.tc; } );
+  var rawVals = rows.map( function(r) { return r[ col ]; } );
   rawVals.sort( d3.ascending );
 
   var median = d3.median( rawVals );
   console.log( "median: $", commasFormatter( median ) );
+
+  var mdiv = d3.select("#chartgroup0").append("div")
+  	.attr("class", "g-annotation")
+  	.attr("style", "top:-250px;left:" + x(median) * 0.35 + "px");
+
+  mdiv.append("div")
+  	.attr("class", "g-annotation-content")
+  	.attr("style", "width:90px")
+  	.text("Median " + col + ": $" + commasFormatter( median ) );
+
+ var mlx2 = x(median) - ( x(median) * 0.35 + 98 ) + 39;
+
+  mdiv.append("svg")
+  	.attr("class", "g-annotation-pointer")
+  	.attr("style", "position:relative;top:-18px;left:98px")
+  	.append("line")
+  		.attr("x2", mlx2)
+  		.attr("y2", "40");	
+/*
+
+    <div class="g-annotation" style="top:-300px;left:150px"> <!-- width:90px;height:50px -->
+      <div class="g-annotation-content" style="width:90px">Median Salary: $117,338</div>
+      <svg class="g-annotation-pointer" style="position:relative;top:-18px;left:98px">
+        <line x2="140" y2="90"></line>
+      </svg>
+    </div>
+
+*/
+
   svg.append("g")
     .attr("class", "median-line")
     .attr("transform", "translate(" + x( median ) + ", " + ( .6 * height + 6  ) + " )" )
