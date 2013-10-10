@@ -1,9 +1,9 @@
 
-function stackedBarChart( parentSelector, data, measures )
+function stackedBarChart( parentSelector, data, measures, yaxisLabel )
 {
-	var margin = {top: 20, right: 20, bottom: 200, left: 60},
+	var margin = {top: 20, right: 50, bottom: 200, left: 60},
 	    width = 500 - margin.left - margin.right,
-	    height = 500 - margin.top - margin.bottom;
+	    height = 450 - margin.top - margin.bottom;
 	 
 	var x = d3.scale.ordinal()
 	    .rangeRoundBands([0, width], .1);
@@ -22,7 +22,7 @@ function stackedBarChart( parentSelector, data, measures )
 	var yAxis = d3.svg.axis()
 	    .scale(y)
 	    .orient("left")
-      	.innerTickSize( -1*width + 3 * margin.right )
+      	.innerTickSize( -1*width + 10 )
       	.outerTickSize( 0 )	    
 	    .tickFormat( d3.format("$s") );
 	 
@@ -68,7 +68,7 @@ function stackedBarChart( parentSelector, data, measures )
       .attr("x", -1 * height + margin.bottom)
       .style("text-anchor", "end")
       .style("font-weight", "bold")
-      .text("Total Cost of Employment (TCOE)");  
+      .text( yaxisLabel );  
 
 
 	var state = svg.selectAll(".state")
@@ -154,15 +154,17 @@ function stackedBarChart( parentSelector, data, measures )
            	lttdiv.style("display", "none");
             } );	
 
+     var loffset = 50;
+
 	legend.append("rect")
-	  .attr("x", width - 18)
+	  .attr("x", width + loffset - 18)
 	  .attr("width", 18)
 	  .attr("height", 18)
 	  .style("fill", color);
 
 
 	legend.append("text")
-	  .attr("x", width - 24)
+	  .attr("x", width + loffset - 24)
 	  .attr("y", 9)
 	  .attr("dy", ".35em")
 	  .style("text-anchor", "end")

@@ -56,11 +56,11 @@ function renderVis( rows ) {
 
   var dpyMeasures = measures.slice( 0, measures.length - 1 );	// drop TCOE
 
-  stackedBarChart( "#AvgComp", avgSummary, dpyMeasures );
+  stackedBarChart( "#AvgComp", avgSummary, dpyMeasures, "Total Cost of Employment (TCOE)" );
 
 
   var totalSummary = summarize( rows, measures, rollupBy( d3.sum ) );
-  stackedBarChart( "#TotalComp", totalSummary, dpyMeasures );
+  stackedBarChart( "#TotalComp", totalSummary, dpyMeasures, "Total Compensation Expense" );
 
   console.log( "Total Summary: ", totalSummary );
 };
