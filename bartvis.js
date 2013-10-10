@@ -1,23 +1,27 @@
 
-// get summary stats for the specified measure columns:
-// for now just uses mean; TODO: make metric func a parameter
-function rollupMean( rows, measures ) {
-  res = {};
+// get summary stats for the specified measure columns,
+// aggregated using aggFunc
+function rollupBy(aggFunc) {
+  function af( rows, measures ) {
+	  res = {};
 
-  measures.forEach( function( m ) {
-	  var rawVals = rows.map( function(r) { return r[ m ]; } );
-	  rawVals.sort( d3.ascending );
-	  var mean = d3.mean( rawVals );
-	  res[ m ] = mean 
-  } );
+	  measures.forEach( function( m ) {
+		  var rawVals = rows.map( function(r) { return r[ m ]; } );
+		  rawVals.sort( d3.ascending );
+		  var agg = aggFunc( rawVals );
+		  res[ m ] = agg 
+	  } );
 
-  return res;
+	  return res;
+	}
+
+  return af;
 }
 
-function summarize( rows, measures ) {
+function summarize( rows, measures, rollupFunc ) {
 
-	function rollupFunc( vals ) {
-		var ret = rollupMean( vals, measures );
+	function rollupAndCount( vals ) {
+		var ret = rollupFunc( vals, measures );
 		ret.count = vals.length;
 
 		return ret;
@@ -26,7 +30,7 @@ function summarize( rows, measures ) {
 	var res = 
 	  d3.nest()
 	    .key(function(r) { return r["Job Family"]; } )
-	    .rollup( rollupFunc )
+	    .rollup( rollupAndCount )
 	    .entries( rows );
     return res;
 }
@@ -42,17 +46,23 @@ function renderVis( rows ) {
   jfVals.sort( d3.ascending );
   console.log( "Job Families: ", jfVals );
 
-  var meanAll = rollupMean( rows, measures );
+  var meanAll = rollupBy( d3.mean )( rows, measures );
   console.log( "Mean of all measure for all employees", meanAll );
 
   renderHistogram( rows, "TCOE" );
-  var summary = summarize( rows, measures );
 
-  console.log( "Summary stats: ", summary );
+  var avgSummary = summarize( rows, measures, rollupBy( d3.mean ) );
+  console.log( "Summary stats: ", avgSummary );
 
   var dpyMeasures = measures.slice( 0, measures.length - 1 );	// drop TCOE
 
-  stackedBarChart( "#AvgCompByJobFamily", summary, dpyMeasures );
+  stackedBarChart( "#AvgComp", avgSummary, dpyMeasures );
+
+
+  var totalSummary = summarize( rows, measures, rollupBy( d3.sum ) );
+  stackedBarChart( "#TotalComp", totalSummary, dpyMeasures );
+
+  console.log( "Total Summary: ", totalSummary );
 };
 
 
