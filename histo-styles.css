@@ -1,4 +1,4 @@
-h1 {
+h1,h2,h3,h4,h5 {
   font-family: sans-serif;
 }
 
@@ -48,4 +48,42 @@ svg {
   padding: 3px;
   fill: #fff;
   background-color: #fff;
+}
+
+
+.stackedBar-tooltip {
+  position: absolute;  
+  stroke: #555;
+  shape-rendering: crispEdges;
+  max-width: 150px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  pointer-events: none;
+  display: none;  
+}
+
+.border-collapse {
+  border-collapse: collapse;
+}
+
+.border-top {
+  border-top: solid 1px #555;
+}
+
+.stackedBar-tooltip-content {
+  font: 12px sans-serif;
+  color: #555;
+  position: relative;
+  border:1.5px solid;
+  padding: 3px;
+  fill: #fff;
+  background-color: #fff;
+}
+
+.stackedBar-tooltip-title {
+  font-weight: bold;
+  color: #000;
+}
+
+#tt-tcoe {
+  font-weight: bold;
 }
