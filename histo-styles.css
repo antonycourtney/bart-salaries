@@ -51,7 +51,7 @@ svg {
 }
 
 
-.stackedBar-tooltip {
+.sb-tooltip {
   position: absolute;  
   stroke: #555;
   shape-rendering: crispEdges;
@@ -69,7 +69,7 @@ svg {
   border-top: solid 1px #555;
 }
 
-.stackedBar-tooltip-content {
+.sb-tooltip-content {
   font: 12px sans-serif;
   color: #555;
   position: relative;
@@ -79,7 +79,7 @@ svg {
   background-color: #fff;
 }
 
-.stackedBar-tooltip-title {
+.sb-tooltip-title {
   font-weight: bold;
   color: #000;
 }

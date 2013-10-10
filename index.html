@@ -3,11 +3,11 @@
 <link rel="stylesheet" href="histo-styles.css" type="text/css"/>
 <body>
 <h1>BART Salaries</h1>
-  <div class="chart group" id="compByJobFamily">
-  <h4>Average Total Compensation Per Employee By Job Family:</h4>
-  	<div class="stackedBar-tooltip" id="data-tooltip" style="opacity:0.95;">
-  		<div class="stackedBar-tooltip-content" >
-	  		<div class="stackedBar-tooltip-title" id="dt-title">Executive Management</div>
+  <div class="chart group" id="AvgCompByJobFamily">
+  <h4>Average Total Compensation Per Employee:</h4>
+  	<div class="sb-tooltip sb-data-tooltip" style="opacity:0.95;">
+  		<div class="sb-tooltip-content" >
+	  		<div class="sb-tooltip-title" id="dt-title">Executive Management</div>
 	  		<table class="border-collapse">
 	  		<tr><td>Employees:</td><td id="tt-count">12</td>
 	  		<tr><td class="border-top">Base:</td><td class="border-top" id="tt-base">12</td>
@@ -22,10 +22,10 @@
 	  		</table>
   		</div>
   	</div>
-  	<div class="stackedBar-tooltip" id="legend-tooltip" style="opacity:0.9;">
-  		<div class="stackedBar-tooltip-content" >
-	  		<div class="stackedBar-tooltip-title" id="ltt-title">Base</div>
-	  		<div class="stackedBar-tooltip-body" id="ltt-body">Base salary for calendar year</div>
+  	<div class="sb-tooltip sb-legend-tooltip" style="opacity:0.9;">
+  		<div class="sb-tooltip-content" >
+	  		<div class="sb-tooltip-title">Base</div>
+	  		<div class="sb-tooltip-body">Base salary for calendar year</div>
   		</div>
   	</div>  	
   </div>

@@ -52,7 +52,7 @@ function renderVis( rows ) {
 
   var dpyMeasures = measures.slice( 0, measures.length - 1 );	// drop TCOE
 
-  stackedBarChart( "#compByJobFamily", summary, dpyMeasures );
+  stackedBarChart( "#AvgCompByJobFamily", summary, dpyMeasures );
 };
 
 

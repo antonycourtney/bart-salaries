@@ -78,7 +78,7 @@ function stackedBarChart( parentSelector, data, measures )
 	  .attr("transform", function(d) { return "translate(" + x(d.key) + ",0)"; });
 
   	// Interactive tooltip!
-  	var ttdiv = d3.select("#data-tooltip");
+  	var ttdiv = d3.select(parentSelector + " .sb-tooltip");
   	var tttitle = d3.select("#dt-title");
 
   	var tt_tcoe = d3.select("#tt-tcoe");
@@ -119,9 +119,9 @@ function stackedBarChart( parentSelector, data, measures )
            	ttdiv.style("display", "none");
             } );
 
-    var lttdiv = d3.select("#legend-tooltip");
-    var ltt_title = d3.select("#ltt-title");
-    var ltt_body = d3.select("#ltt-body");
+    var lttdiv = d3.select(parentSelector + " .sb-legend-tooltip");
+    var ltt_title = d3.select(parentSelector + " .sb-legend-tooltip .sb-tooltip-title");
+    var ltt_body = d3.select(parentSelector + " .sb-legend-tooltip .sb-tooltip-body");
 
     var legend_dict = {
     	"Base": "base pay for calendar year 2012",
