@@ -79,18 +79,18 @@ function stackedBarChart( parentSelector, data, measures )
 
   	// Interactive tooltip!
   	var ttdiv = d3.select(parentSelector + " .sb-tooltip");
-  	var tttitle = d3.select("#dt-title");
+  	var tttitle = d3.select(parentSelector + " .sb-data-tooltip .sb-tooltip-title" );
 
-  	var tt_tcoe = d3.select("#tt-tcoe");
-  	var tt_base = d3.select("#tt-base");
-  	var tt_ot = d3.select("#tt-ot");
-  	var tt_other = d3.select("#tt-other");
-  	var tt_mdv = d3.select("#tt-mdv");
-  	var tt_er = d3.select("#tt-er");
-  	var tt_ee = d3.select("#tt-ee");
-  	var tt_dc = d3.select("#tt-dc");
-  	var tt_misc = d3.select("#tt-misc");
-  	var tt_count = d3.select("#tt-count");
+  	var tt_tcoe = d3.select(".tt-tcoe");
+  	var tt_base = d3.select(".tt-base");
+  	var tt_ot = d3.select(".tt-ot");
+  	var tt_other = d3.select(".tt-other");
+  	var tt_mdv = d3.select(".tt-mdv");
+  	var tt_er = d3.select(".tt-er");
+  	var tt_ee = d3.select(".tt-ee");
+  	var tt_dc = d3.select(".tt-dc");
+  	var tt_misc = d3.select(".tt-misc");
+  	var tt_count = d3.select(".tt-count");
 
 	state.selectAll("rect")
 	  .data(function(d) { return d.valCoords; })
