@@ -63,6 +63,8 @@ function renderVis( rows ) {
   stackedBarChart( "#TotalComp", totalSummary, dpyMeasures, "Total Compensation Expense" );
 
   console.log( "Total Summary: ", totalSummary );
+
+  dualStackedBarChart( "#DualComp", avgSummary, dpyMeasures, "Total Cost of Employment (TCOE)" );
 };
 
 
