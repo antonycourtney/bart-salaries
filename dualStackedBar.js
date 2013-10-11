@@ -2,14 +2,19 @@
  * dual stacked bar chart -- oriented vertically (top to bottom), with 
  * labels in center and axes running to right and left.
  */
-function dualStackedBarChart( parentSelector, data, measures, yaxisLabel )
+function dualStackedBarChart( parentSelector, data, data2, measures, yaxisLabel )
 {
 	var margin = {top: 20, right: 20, bottom: 20, left: 200},
 	    width = 900 - margin.left - margin.right,
 	    height = 500 - margin.top - margin.bottom;
-	 
+	
+    var pad = 10;
+
 	var x = d3.scale.linear()
-	    .rangeRound([ width/2, width]);
+	    .rangeRound([ width/2 + pad , width - pad ]);
+
+	var x2 = d3.scale.linear()
+	    .rangeRound([ width/2 - pad, pad ]);
 	 
 	var y = d3.scale.ordinal()
 	    .rangeRoundBands([0, height ], .1);
@@ -29,11 +34,15 @@ function dualStackedBarChart( parentSelector, data, measures, yaxisLabel )
 	    .ticks( 6 )
 	    .tickFormat( d3.format("$s") )
 	    .outerTickSize( 0 );
-	    /*
-      	.innerTickSize( -1*width + 10 )
-      	.outerTickSize( 0 )	    
 
-	 */
+	var x2Axis = d3.svg.axis()
+	    .scale(x2)
+	    .orient("top")
+	    .ticks( 6 )
+	    .tickFormat( d3.format("$s") )
+	    .outerTickSize( 0 );
+
+
 	var svg = d3.select(parentSelector).append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
@@ -53,6 +62,14 @@ function dualStackedBarChart( parentSelector, data, measures, yaxisLabel )
 	y.domain(data.map(function(d) { return d.key; }));
 	x.domain([0, d3.max(data, function(d) { return d.total; })]);
 
+	data2.forEach(function(d) {
+		var x0 = 0;
+		d.valCoords = color.domain().map(function(name) { return {key: d.key, values: d.values, name: name, x0: x0, x1: x0 += +d.values[name]}; });
+		d.total = d.valCoords[d.valCoords.length - 1].x1;
+	});
+
+	x2.domain([0, d3.max(data2, function(d) { return d.total; })]);
+
 	svg.append("g")
 	  .attr("class", "y axis")
 	  /* attr("transform", "translate(0," + height + ")") */
@@ -61,6 +78,10 @@ function dualStackedBarChart( parentSelector, data, measures, yaxisLabel )
 	svg.append("g")
 	  .attr("class", "x axis")
 	  .call(xAxis);
+
+	svg.append("g")
+	  .attr("class", "x axis")
+	  .call(x2Axis);
    
    /*
     .append("text")
@@ -75,7 +96,7 @@ function dualStackedBarChart( parentSelector, data, measures, yaxisLabel )
 
 	var rect = svg.selectAll(".rect")
 	  .data(data)
-	.enter().append("g")
+	  .enter().append("g")
 	  .attr("class", "g")
 	  .attr("transform", function(d) { return "translate( 0, " + y(d.key) + ")"; });
 
@@ -100,7 +121,7 @@ function dualStackedBarChart( parentSelector, data, measures, yaxisLabel )
 
 	rect.selectAll("rect")
 	  .data(function(d) { return d.valCoords; })
-	.enter().append("rect")
+	  .enter().append("rect")
 	  .attr("height", y.rangeBand())
 	  .attr("x", function(d) { return x(d.x0); })
 	  .attr("width", function(d) { return x(d.x1) - x(d.x0); })
@@ -124,6 +145,41 @@ function dualStackedBarChart( parentSelector, data, measures, yaxisLabel )
       .on("mouseout", function(d) {       
            	ttdiv.style("display", "none");
             } );
+
+	var rect2 = svg.selectAll(".rect2")
+	  .data(data2)
+	  .enter().append("g")
+	  .attr("class", "g")
+	  .attr("transform", function(d) { return "translate( 0, " + y(d.key) + ")"; });
+
+	rect2.selectAll("rect")
+	  .data(function(d) { return d.valCoords; })
+	  .enter().append("rect")
+	  .attr("height", y.rangeBand())
+	  .attr("x", function(d) { return x2(d.x1); })
+	  .attr("width", function(d) { return x2(d.x0) - x2(d.x1); })
+	  .style("fill", function(d) { return color(d.name); })
+	  .on("mouseover", function(d) {   
+	  		tttitle.text(d.key);
+	  		tt_tcoe.text(d3.format("$,.0f")(d.values.TCOE)); 
+	  		tt_base.text(d3.format("$,.0f")(d.values.Base)); 
+	  		tt_ot.text(d3.format("$,.0f")(d.values.OT)); 
+	  		tt_other.text(d3.format("$,.0f")(d.values.Other)); 
+	  		tt_mdv.text(d3.format("$,.0f")(d.values.MDV)); 
+	  		tt_er.text(d3.format("$,.0f")(d.values.ER)); 
+	  		tt_ee.text(d3.format("$,.0f")(d.values.EE)); 
+	  		tt_dc.text(d3.format("$,.0f")(d.values.DC)); 
+	  		tt_misc.text(d3.format("$,.0f")(d.values.Misc)); 
+	  		tt_count.text(d3.format(",d")(d.values.count)); 
+            ttdiv.style("display", "block")    
+            	 .style("left", (d3.event.pageX + 20) + "px")     
+                 .style("top", (d3.event.pageY - 28) + "px");    
+            })                  
+      .on("mouseout", function(d) {       
+           	ttdiv.style("display", "none");
+            } );
+
+
 /*
     var lttdiv = d3.select(parentSelector + " .sb-legend-tooltip");
     var ltt_title = d3.select(parentSelector + " .sb-legend-tooltip .sb-tooltip-title");

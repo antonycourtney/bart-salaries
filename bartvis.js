@@ -64,7 +64,7 @@ function renderVis( rows ) {
 
   console.log( "Total Summary: ", totalSummary );
 
-  dualStackedBarChart( "#DualComp", avgSummary, dpyMeasures, "Total Cost of Employment (TCOE)" );
+  dualStackedBarChart( "#DualComp", avgSummary, totalSummary, dpyMeasures, "Total Cost of Employment (TCOE)" );
 };
 
 
