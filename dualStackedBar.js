@@ -4,7 +4,7 @@
  */
 function dualStackedBarChart( parentSelector, data, data2, measures, yaxisLabel )
 {
-	var margin = {top: 40, right: 20, bottom: 20, left: 200},
+	var margin = {top: 40, right: 100, bottom: 20, left: 200},
 	    width = 900 - margin.left - margin.right,
 	    height = 500 - margin.top - margin.bottom;
 	
@@ -83,7 +83,7 @@ function dualStackedBarChart( parentSelector, data, data2, measures, yaxisLabel 
       .attr("x", width/2 + pad * 4 )
       .style("text-anchor", "start")
       .style("font-weight", "bold")
-      .text( "Average Total Cost (TCOE) per Employee" );  
+      .text( "Average Compensation (TCOE) per Employee" );  
 
 
 	svg.append("g")
@@ -218,14 +218,6 @@ function dualStackedBarChart( parentSelector, data, data2, measures, yaxisLabel 
         changeSort( true );
   	} );
 
-/*
-$(document).ready(function() {
-    $("#btnSortEmpAvg").click(function(){
-        alert("sort:EmployeeAvg");
-    }); 
-});
-*/
-/*
     var lttdiv = d3.select(parentSelector + " .sb-legend-tooltip");
     var ltt_title = d3.select(parentSelector + " .sb-legend-tooltip .sb-tooltip-title");
     var ltt_body = d3.select(parentSelector + " .sb-legend-tooltip .sb-tooltip-body");
@@ -272,7 +264,5 @@ $(document).ready(function() {
 	  .attr("dy", ".35em")
 	  .style("text-anchor", "end")
 	  .text(function(d) { return d; });
-
-*/
 
 }

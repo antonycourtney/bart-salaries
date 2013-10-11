@@ -6,13 +6,21 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
-<h1>BART Salaries</h1>
-  <h4>Compensation Expenses By Job Family:</h4>
-	<strong>Sort:</strong>
+  <div class="container">
+  <h2>BART Salary Expenses</h2>
+  	<br>
+	<strong>Sort:</strong>	
 	<div class="btn-group">
 	  <button class="btn btn-small" id="btnSortTotalExp">Total Expense</button>
 	  <button class="btn btn-small" id="btnSortEmpAvg">Employee Avg</button>
 	</div>
+	<br> 
+			<!--
+			<select class="btn-small" style="width:130px;height:25px">
+				<option>Total Expense</option>
+				<option>Employee Average</option>
+			</select>
+			-->
   <div class="chart group" id="DualComp">
   	<div class="sb-tooltip sb-data-tooltip" style="opacity:0.95;">
   		<div class="sb-tooltip-content" >
@@ -92,10 +100,13 @@
   	</div>  	
   </div>
 -->
+<!--
   <h4>Distribution of Total Compensation (All Employees):</h4>
   <div class="chart group" id="chartgroup0">
     <div id="chart0"></div>
   </div>
+-->
+</div>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>

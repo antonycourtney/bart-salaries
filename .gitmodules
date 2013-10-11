@@ -1,0 +1,4 @@
+[submodule "bart"]
+	path = bart
+	url = https://github.com/enjalot/bart.git
+

@@ -62,11 +62,11 @@ function renderVis( rows ) {
   stackedBarChart( "#TotalComp", totalSummary, dpyMeasures, "Total Compensation Expense" );
   console.log( "Total Summary: ", totalSummary );
   */
-  
+
   dualStackedBarChart( "#DualComp", avgSummary, totalSummary, dpyMeasures, "Total Cost of Employment (TCOE)" );
 };
 
 
-d3.csv("bart-comp-all.csv")
+d3.csv("bart/data/bart-comp-all.csv")
     /* .row(function(d) { return {name: d.Name, title: d.Title, tc: +d["TCOE"]}; }) */
     .get(function(error, rows) { renderVis( rows ); } );
