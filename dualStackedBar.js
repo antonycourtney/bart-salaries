@@ -4,7 +4,7 @@
  */
 function dualStackedBarChart( parentSelector, data, data2, measures, yaxisLabel )
 {
-	var margin = {top: 20, right: 20, bottom: 20, left: 200},
+	var margin = {top: 40, right: 20, bottom: 20, left: 200},
 	    width = 900 - margin.left - margin.right,
 	    height = 500 - margin.top - margin.bottom;
 	
@@ -72,32 +72,39 @@ function dualStackedBarChart( parentSelector, data, data2, measures, yaxisLabel 
 
 	svg.append("g")
 	  .attr("class", "y axis")
-	  /* attr("transform", "translate(0," + height + ")") */
 	  .call(yAxis);
 
 	svg.append("g")
 	  .attr("class", "x axis")
-	  .call(xAxis);
+	  .call(xAxis)
+	  .append("text")
+      .attr("y", -35)
+      .attr("dy", ".71em")
+      .attr("x", width/2 + pad * 4 )
+      .style("text-anchor", "start")
+      .style("font-weight", "bold")
+      .text( "Average Total Cost (TCOE) per Employee" );  
+
 
 	svg.append("g")
 	  .attr("class", "x axis")
-	  .call(x2Axis);
+	  .call(x2Axis)
+	  .append("text")
+      .attr("y", -35)
+      .attr("dy", ".71em")
+      .attr("x", pad * 8 )
+      .style("text-anchor", "start")
+      .style("font-weight", "bold")
+      .text( "Total Compensation Expense" );  
    
    /*
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -55)
-      .attr("dy", ".71em")
-      .attr("x", -1 * height + margin.bottom)
-      .style("text-anchor", "end")
-      .style("font-weight", "bold")
-      .text( yaxisLabel );  
 */
 
 	var rect = svg.selectAll(".rect")
 	  .data(data)
 	  .enter().append("g")
 	  .attr("class", "g")
+	  .attr("class", "bar")
 	  .attr("transform", function(d) { return "translate( 0, " + y(d.key) + ")"; });
 
   	// Interactive tooltip!
@@ -150,6 +157,7 @@ function dualStackedBarChart( parentSelector, data, data2, measures, yaxisLabel 
 	  .data(data2)
 	  .enter().append("g")
 	  .attr("class", "g")
+	  .attr("class", "bar")
 	  .attr("transform", function(d) { return "translate( 0, " + y(d.key) + ")"; });
 
 	rect2.selectAll("rect")
@@ -179,7 +187,44 @@ function dualStackedBarChart( parentSelector, data, data2, measures, yaxisLabel 
            	ttdiv.style("display", "none");
             } );
 
+  	function changeSort( byTotalExp ) {
+  		if( byTotalExp )
+		{
+			data2.sort(function(a, b) { return b.total - a.total; });
+			var y0 = y.domain(data2.map(function(d) { return d.key; })).copy();
+		} else {
+			data.sort(function(a, b) { return b.total - a.total; });
+			var y0 = y.domain(data.map(function(d) { return d.key; })).copy();			
+		}
 
+		var transition = svg.transition().duration(750),
+			delay = function( d, i ) { return i * 50; };
+
+		transition.selectAll(".bar")
+			.delay(delay)
+			.attr("transform", function(d) { return "translate( 0, " + y(d.key) + ")"; });
+
+		transition.select(".y.axis")
+			.call(yAxis)
+			.selectAll("g")
+			.delay(delay);
+  	}
+
+
+  	d3.select("#btnSortEmpAvg").on("click", function() {
+        changeSort( false );
+  	} );
+	d3.select("#btnSortTotalExp").on("click", function() {
+        changeSort( true );
+  	} );
+
+/*
+$(document).ready(function() {
+    $("#btnSortEmpAvg").click(function(){
+        alert("sort:EmployeeAvg");
+    }); 
+});
+*/
 /*
     var lttdiv = d3.select(parentSelector + " .sb-legend-tooltip");
     var ltt_title = d3.select(parentSelector + " .sb-legend-tooltip .sb-tooltip-title");

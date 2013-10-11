@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<link rel="stylesheet" href="histo-styles.css" type="text/css"/>
+<html>
+<head>
+	<link rel="stylesheet" href="histo-styles.css" type="text/css"/>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
 <body>
 <h1>BART Salaries</h1>
-  <div class="chart group" id="DualComp">
   <h4>Compensation Expenses By Job Family:</h4>
+	<strong>Sort:</strong>
+	<div class="btn-group">
+	  <button class="btn btn-small" id="btnSortTotalExp">Total Expense</button>
+	  <button class="btn btn-small" id="btnSortEmpAvg">Employee Avg</button>
+	</div>
+  <div class="chart group" id="DualComp">
   	<div class="sb-tooltip sb-data-tooltip" style="opacity:0.95;">
   		<div class="sb-tooltip-content" >
 	  		<div class="sb-tooltip-title">Executive Management</div>
@@ -29,7 +38,7 @@
   		</div>
   	</div>  	
   </div>
-
+<!-- 
   <div class="chart group" id="AvgComp">
   <h4>Average Total Compensation Per Employee (By Job Family):</h4>
   	<div class="sb-tooltip sb-data-tooltip" style="opacity:0.95;">
@@ -82,13 +91,17 @@
   		</div>
   	</div>  	
   </div>
+-->
   <h4>Distribution of Total Compensation (All Employees):</h4>
   <div class="chart group" id="chartgroup0">
     <div id="chart0"></div>
   </div>
-</body>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="histogram.js"></script>
 <script src="stackedBar.js"></script>
 <script src="dualStackedBar.js"></script>
 <script src="bartvis.js"></script>
+</body>
+</html>

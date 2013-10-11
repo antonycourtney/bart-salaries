@@ -52,18 +52,17 @@ function renderVis( rows ) {
   renderHistogram( rows, "TCOE" );
 
   var avgSummary = summarize( rows, measures, rollupBy( d3.mean ) );
-  console.log( "Summary stats: ", avgSummary );
+  var totalSummary = summarize( rows, measures, rollupBy( d3.sum ) );
 
   var dpyMeasures = measures.slice( 0, measures.length - 1 );	// drop TCOE
-
+  
+  /*
+  console.log( "Summary stats: ", avgSummary );
   stackedBarChart( "#AvgComp", avgSummary, dpyMeasures, "Total Cost of Employment (TCOE)" );
-
-
-  var totalSummary = summarize( rows, measures, rollupBy( d3.sum ) );
   stackedBarChart( "#TotalComp", totalSummary, dpyMeasures, "Total Compensation Expense" );
-
   console.log( "Total Summary: ", totalSummary );
-
+  */
+  
   dualStackedBarChart( "#DualComp", avgSummary, totalSummary, dpyMeasures, "Total Cost of Employment (TCOE)" );
 };
 

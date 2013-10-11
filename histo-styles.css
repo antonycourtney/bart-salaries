@@ -55,7 +55,7 @@ svg {
   position: absolute;  
   stroke: #555;
   shape-rendering: crispEdges;
-  max-width: 150px;
+  max-width: 180px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   pointer-events: none;
   display: none;  
