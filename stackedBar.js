@@ -71,9 +71,9 @@ function stackedBarChart( parentSelector, data, measures, yaxisLabel )
       .text( yaxisLabel );  
 
 
-	var state = svg.selectAll(".state")
+	var rect = svg.selectAll("rect")
 	  .data(data)
-	.enter().append("g")
+	  .enter().append("g")
 	  .attr("class", "g")
 	  .attr("transform", function(d) { return "translate(" + x(d.key) + ",0)"; });
 
@@ -96,7 +96,7 @@ function stackedBarChart( parentSelector, data, measures, yaxisLabel )
   	var tt_misc = d3.select(parentSelector + " .tt-misc");
   	var tt_count = d3.select(parentSelector + " .tt-count");
 
-	state.selectAll("rect")
+	rect.selectAll("rect")
 	  .data(function(d) { return d.valCoords; })
 	.enter().append("rect")
 	  .attr("width", x.rangeBand())
