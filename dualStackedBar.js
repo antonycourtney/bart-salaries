@@ -110,13 +110,13 @@ function dualStackedBarChart( parentSelector, data, data2, measures, yaxisLabel 
   	// Interactive tooltip!
   	var ttdiv = d3.select(parentSelector + " .sb-tooltip");
 
-  	console.log( "ttdiv:", ttdiv );
+  	// console.log( "ttdiv:", ttdiv );
 
   	var tttitle = d3.select(parentSelector + " .sb-data-tooltip .sb-tooltip-title" );
 
   	var tt_tcoe = d3.select(parentSelector + " .tt-tcoe");
   	var tt_base = d3.select(parentSelector + " .tt-base");
-  	console.log( "ttbase:", tt_base );
+  	// console.log( "ttbase:", tt_base );
   	var tt_ot = d3.select(parentSelector + " .tt-ot");
   	var tt_other = d3.select(parentSelector + " .tt-other");
   	var tt_mdv = d3.select(parentSelector + " .tt-mdv");

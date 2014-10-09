@@ -1,9 +1,11 @@
 
+'use strict';
+
 // get summary stats for the specified measure columns,
 // aggregated using aggFunc
 function rollupBy(aggFunc) {
   function af( rows, measures ) {
-	  res = {};
+	  var res = {};
 
 	  measures.forEach( function( m ) {
 		  var rawVals = rows.map( function(r) { return r[ m ]; } );
@@ -52,6 +54,7 @@ function renderVis( rows ) {
   renderHistogram( rows, "TCOE" );
 
   var avgSummary = summarize( rows, measures, rollupBy( d3.mean ) );
+
   var totalSummary = summarize( rows, measures, rollupBy( d3.sum ) );
 
   var dpyMeasures = measures.slice( 0, measures.length - 1 );	// drop TCOE
@@ -68,5 +71,18 @@ function renderVis( rows ) {
 
 
 d3.csv("bart/data/bart-comp-all.csv")
-    /* .row(function(d) { return {name: d.Name, title: d.Title, tc: +d["TCOE"]}; }) */
+    .row(function(d) { return { Name: d.Name, 
+                                Title: d.Title,
+                                "Job Family": d["Job Family"],
+                                Source: d.Source,
+                                Union: d.Union,
+                                Base: +d["Base"],
+                                OT: +d["OT"],
+                                Other: +d["Other"],
+                                MDV: +d["MDV"],
+                                ER: +d["ER"],
+                                EE: +d["EE"],
+                                DC: +d["DC"],
+                                Misc: +d["Misc"],
+                                TCOE: +d["TCOE"] }; })
     .get(function(error, rows) { renderVis( rows ); } );
